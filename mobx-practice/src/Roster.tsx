@@ -15,6 +15,7 @@ function Roster() {
         <th>Teams</th>
         <th>Trade Form</th>
         <th>Is it their birthday?</th>
+        <th>Salary</th>
       </tr>
       {players.map((athlete) => {
         //loop over the the athletes and display their stats in table data
@@ -35,6 +36,7 @@ function Roster() {
                 Wish happy birthday
               </button>
             </td>
+            <td>{athlete.salary}</td>
           </tr>
         );
       })}

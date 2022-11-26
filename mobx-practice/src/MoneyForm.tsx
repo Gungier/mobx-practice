@@ -1,17 +1,27 @@
 import { action, computed, observable, toJS } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
+import Athlete from "./Athlete";
+import { useTeamStore } from "./TeamStore";
 
 type FormState = {
   //   total: number;
-  years: number;
+  name: string;
+  age: number;
   salary: number;
 };
 
+const initialState: FormState = {
+  name: "",
+  age: 0,
+  salary: 0,
+};
+
 //bring in observable to watch for computed derivations
-const formState: FormState = observable({
+let formState: FormState = observable({
   //   total: 0,
-  years: 0,
+  name: "",
+  age: 0,
   salary: 0,
 });
 
@@ -23,28 +33,47 @@ const formState: FormState = observable({
 // });
 
 function MoneyForm() {
-  const totalValue = computed(() => formState.salary * formState.years);
+  const { totalYearlyCost, addPlayer } = useTeamStore();
+  //   const totalValue = computed(() => formState.salary * formState.years);
 
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
       <h1 style={{ marginBottom: 0 }}>Money Talks</h1>
-      <>Total: {toJS(totalValue)}</>
+      <>Total: {totalYearlyCost} Million</>
       <input
-        type="number"
-        placeholder="Years..."
+        type="text"
+        placeholder="Player name..."
         style={{ height: "40px" }}
         onChange={action((e) => {
-          formState.years = Number(e.target.value);
+          formState.name = e.target.value;
         })}
       />
       <input
         type="number"
-        placeholder="Yearly salary..."
+        placeholder="Player age..."
+        style={{ height: "40px" }}
+        onChange={action((e) => {
+          formState.age = Number(e.target.value);
+        })}
+      />
+      <input
+        type="number"
+        placeholder="Player salary..."
         style={{ height: "40px" }}
         onChange={action((e) => {
           formState.salary = Number(e.target.value);
         })}
       />
+      <button
+        type="button"
+        onClick={action((e) => {
+          addPlayer(
+            new Athlete(formState.name, formState.age, formState.salary)
+          );
+          formState = initialState;
+        })}>
+        Add Player
+      </button>
       {/* <button type="button" onClick={() => calculateTotal(initialState)}>
         Calculate total
       </button> */}

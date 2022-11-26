@@ -21,7 +21,7 @@ export default class TeamStore {
   players: Athlete[] = [];
 
   get teamName(): string {
-    return this.state + this.mascot;
+    return `${this.state} ${this.mascot}`;
   }
 
   get totalYearlyCost(): number {
@@ -31,9 +31,9 @@ export default class TeamStore {
     );
   }
 
-  addPlayer(player: Athlete) {
+  addPlayer = (player: Athlete) => {
     this.players.push(player);
-  }
+  };
 }
 
 const TeamStoreContext = React.createContext<TeamStore>(
